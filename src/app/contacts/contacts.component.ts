@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { ContactService } from './contact.service';
 import { Component, OnInit } from '@angular/core';
 import { Contact } from './contact.model';
@@ -11,7 +12,9 @@ export class ContactsComponent implements OnInit {
   contacts: Contact[];
   isFetching = false;
 
-  constructor(private contactService: ContactService) { }
+  constructor(
+    private contactService: ContactService,
+    private router: Router) { }
 
   ngOnInit(): void {
     this.getContacts();
@@ -24,5 +27,16 @@ export class ContactsComponent implements OnInit {
       this.contacts = contacts;
       this.isFetching = false;
     });
+  }
+
+  onUpdate(id: number) {
+    this.contactService.getContact(id)
+    .subscribe(c => {
+      console.log('contact detail: ', c);
+    });
+  }
+
+  onAdd() {
+    this.router.navigate(['/contacts/new']);
   }
 }

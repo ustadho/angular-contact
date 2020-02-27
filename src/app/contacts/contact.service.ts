@@ -26,6 +26,37 @@ export class ContactService {
 
   }
 
+  getContact(id: number): Observable<Contact> {
+    return this.http.get<Contact>(this.contactUrl + '/' + id)
+      .pipe(
+        tap(_ => this.log('get contact id: ' + id)),
+        catchError(this.handleError<Contact>('getContact', null))
+      );
+  }
+
+  save(c: Contact) {
+    if (c.id !== null) {
+      return this.http.put(this.contactUrl + '/' + c.id, c)
+        .pipe(
+          tap(_ => this.log('Save contact id : ' + c.id)),
+          catchError(this.handleError<Contact>('saveContact', null))
+        );
+    } else {
+      // If we post c (instance of Contact) the error 422 will occure
+      // https://www.keycdn.com/support/422-unprocessable-entity
+      const data = {
+        fullName: c.fullName,
+        phoneNumber: c.phoneNumber,
+        address: c.address
+      }
+      return this.http.post(this.contactUrl, data)
+        .pipe(
+          tap(_ => this.log('Save contact id : ' + c.id)),
+          catchError(this.handleError<Contact>('saveContact', null))
+        );
+    }
+  }
+
   private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
 
