@@ -57,6 +57,13 @@ export class ContactService {
     }
   }
 
+  delete(id: number) {
+    return this.http.delete(this.contactUrl + '/' + id)
+      .pipe(
+        tap(_ => this.log('Delete : ' + id)),
+        catchError(this.handleError<Contact>('deleteContact', null))
+      );
+  }
   private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
 

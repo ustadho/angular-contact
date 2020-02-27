@@ -5,7 +5,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { ContactsComponent } from './contacts/contacts.component';
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbdModalConfirm } from './shared/ngbd-modal-confirm';
 import { HomeComponent } from './home/home.component';
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
@@ -18,7 +19,8 @@ import { ContactDetailComponent } from './contacts/contact-detail/contact-detail
     HomeComponent,
     HeaderComponent,
     FooterComponent,
-    ContactDetailComponent
+    ContactDetailComponent,
+    NgbdModalConfirm
   ],
   imports: [
     BrowserModule,
@@ -29,6 +31,7 @@ import { ContactDetailComponent } from './contacts/contact-detail/contact-detail
     AppRoutingModule
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [NgbdModalConfirm]
 })
 export class AppModule { }
