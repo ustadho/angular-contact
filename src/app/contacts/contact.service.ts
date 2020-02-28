@@ -16,9 +16,11 @@ export class ContactService {
 
   constructor(private http: HttpClient, private messageService: MessageService) { }
 
-  getContacts(): Observable<Contact[]> {
+  getContacts(colName: string, direction: string): Observable<Contact[]> {
+    const url = this.contactUrl + `?filter[order]=${colName} ${direction}`;
+    console.log(url);
     return this.http
-      .get<Contact[]>(this.contactUrl)
+      .get<Contact[]>(url)
       .pipe(
         tap(_ => this.log('fetches contacts')),
         catchError(this.handleError<Contact[]>('getContacts', []))

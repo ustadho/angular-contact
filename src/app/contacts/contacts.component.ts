@@ -1,6 +1,7 @@
+import { NgbdSortableHeader, SortEvent, compare } from './../shared/ngbd-sortable-header';
 import { Router } from '@angular/router';
 import { ContactService } from './contact.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChildren, QueryList } from '@angular/core';
 import { Contact } from './contact.model';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgbdModalConfirm } from '../shared/ngbd-modal-confirm';
@@ -17,15 +18,16 @@ export class ContactsComponent implements OnInit {
   constructor(
     private contactService: ContactService,
     private router: Router,
-    private _modalService: NgbModal) { }
+    private modalService: NgbModal) { }
+    @ViewChildren(NgbdSortableHeader) headers: QueryList<NgbdSortableHeader>;
 
   ngOnInit(): void {
-    this.getContacts();
+    this.getContacts('id', 'asc');
   }
 
-  getContacts(): void {
+  getContacts(col: string, direction: string): void {
     this.isFetching = true;
-    this.contactService.getContacts()
+    this.contactService.getContacts(col, direction)
       .subscribe(contacts => {
         this.contacts = contacts;
         this.isFetching = false;
@@ -44,7 +46,7 @@ export class ContactsComponent implements OnInit {
   }
 
   onDelete(c: Contact) {
-    const modalRef = this._modalService.open(NgbdModalConfirm);
+    const modalRef = this.modalService.open(NgbdModalConfirm);
     modalRef.componentInstance.contact = c;
     modalRef.componentInstance.confirmationBoxTitle = 'Confirmation?';
     modalRef.componentInstance.confirmationMessage = 'Do you want to cancel?';
@@ -55,10 +57,21 @@ export class ContactsComponent implements OnInit {
         if (userResponse === 'Ok') {
           this.contactService.delete(c.id)
             .subscribe(() => {
-              this.getContacts();
+              this.getContacts('id', 'asc');
+              // this.onSort({column, direction}: SortEvent);
             });
         }
       })
       .catch(err => console.log(`User's choice: ${err}`));
+  }
+
+  onSort({column, direction}: SortEvent) {
+    // resetting other headers
+    this.headers.forEach(header => {
+      if (header.sortable !== column) {
+        header.direction = '';
+      }
+    });
+    this.getContacts(column, direction);
   }
 }

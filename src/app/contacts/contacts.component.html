@@ -1,32 +1,36 @@
 <h2>Contact List</h2>
 <p *ngIf="isFetching">Loading...</p>
-<table class="table table-hover" *ngIf="!isFetching">
-  <thead>
-    <th>ID</th>
-    <th>Full Name</th>
-    <th>Phone Number</th>
-    <th>Adress</th>
-    <th>
-      <button class="btn btn-success" (click)="onAdd()" >
-        Add Contact
-      </button>
-    </th>
-  </thead>
-  <tbody>
-    <tr *ngFor="let contact of contacts">
-      <td>{{ contact.id }}</td>
-      <td>{{ contact.fullName }}</td>
-      <td>{{ contact.phoneNumber }}</td>
-      <td>{{ contact.address }}</td>
-      <td>
-        <a
-          class="btn btn-primary btn-sm"
-          routerLink="/contacts/{{ contact.id }}"
-        >
-          Update
-        </a>
-        <a class="btn btn-danger btn-sm" (click)="onDelete(contact)"> Delete </a>
-      </td>
-    </tr>
-  </tbody>
-</table>
+<div class="row">
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th scope="col" sortable="fullName" (sort)="onSort($event)">Full Name</th>
+        <th>Phone Number</th>
+        <th scope="col" sortable="address" (sort)="onSort($event)">Adress</th>
+        <th>
+          <button class="btn btn-success" (click)="onAdd()" >
+            Add Contact
+          </button>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let contact of contacts">
+        <td>{{ contact.id }}</td>
+        <td>{{ contact.fullName }}</td>
+        <td>{{ contact.phoneNumber }}</td>
+        <td>{{ contact.address }}</td>
+        <td>
+          <a
+            class="btn btn-primary btn-sm"
+            routerLink="/contacts/{{ contact.id }}"
+          >
+            Update
+          </a>
+          <a class="btn btn-danger btn-sm" (click)="onDelete(contact)"> Delete </a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

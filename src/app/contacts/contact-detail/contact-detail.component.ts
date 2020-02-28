@@ -1,9 +1,11 @@
+import { customValidationService } from './../../validator/custom-validation.service';
 import { ContactService } from './../contact.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { Contact } from '../contact.model';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
+import { phoneNumberValidator } from 'src/app/validator/phone-validator';
 
 @Component({
   selector: 'app-contact-detail',
@@ -18,12 +20,18 @@ export class ContactDetailComponent implements OnInit {
   // if we use, we must set value all of the attribut below when interpolate the data
   contactForm = new FormGroup({
     id: new FormControl(null),
-    fullName: new FormControl('', Validators.required),
+    fullName: new FormControl('', [
+      Validators.required,
+      Validators.pattern(/^[a-zA-Z ]*$/)
+    ]),
     phoneNumber: new FormControl('', [
       Validators.required,
-      Validators.pattern(/^[0-9]+[0-9]*$/)
+      Validators.pattern(/^[+]?\d+$/)
     ]),
-    address: new FormControl('', Validators.required)
+    address: new FormControl('', [
+      Validators.required,
+      Validators.maxLength(100)
+    ])
   });
   editMode = false;
   editId: number;
@@ -67,4 +75,15 @@ export class ContactDetailComponent implements OnInit {
     this.router.navigate(['../'], {relativeTo: this.route}); // up to 1 level
   }
 
+  get phoneNumber() {
+    return this.contactForm.get('phoneNumber');
+  }
+
+  get fullName() {
+    return this.contactForm.get('fullName');
+  }
+
+  get address() {
+    return this.contactForm.get('address');
+  }
 }

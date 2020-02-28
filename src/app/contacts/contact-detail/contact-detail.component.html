@@ -2,15 +2,34 @@
 <form [formGroup]="contactForm" (ngSubmit)="onSubmit()">
   <div class="form-group">
     <label for="fullName">Full Name</label>
-    <input type="text" class="form-control" id="fullName" placeholder="Enter Full Name" formControlName="fullName">
+    <input type="text" class="form-control" id="fullName" placeholder="Enter Full Name" formControlName="fullName" autocomplete="false">
+    <span *ngIf="(fullName.dirty || fullName.touched) && fullName.invalid && fullName.errors.required">
+      Full Name is required.
+    </span>
+    <span *ngIf="(fullName.dirty || fullName.touched) && fullName.invalid && fullName.errors.pattern">
+      Must contain alphabet only
+    </span>
   </div>
   <div class="form-group">
     <label for="phoneNumber">Phone Number</label>
-    <input type="text" class="form-control" id="phoneNumber" placeholder="Enter Phone Number" formControlName="phoneNumber">
+    <input type="text" class="form-control" id="phoneNumber" minlength="10" maxlength="14" placeholder="Enter Phone Number" formControlName="phoneNumber"  autocomplete="false">
+    <span *ngIf="(phoneNumber.dirty || phoneNumber.touched) && phoneNumber.invalid && phoneNumber.errors.required">
+      Mobile is required.
+    </span>
+    <span *ngIf="(phoneNumber.dirty || phoneNumber.touched) && phoneNumber.invalid && phoneNumber.errors.pattern">
+      Phone number is not valid
+    </span>
+
   </div>
   <div class="form-group">
     <label for="address">Adress</label>
-    <textarea class="form-control" id="address" rows="3" formControlName="address"></textarea>
+    <textarea class="form-control" id="address" rows="3" formControlName="address" ></textarea>
+    <span *ngIf="(address.dirty || address.touched) && address.invalid && address.errors.required">
+      Address is required.
+    </span>
+    <span *ngIf="(address.dirty || address.touched) && address.errors?.maxlength">
+      Address cannot be longer than 100 characters
+    </span>
   </div>
 
 

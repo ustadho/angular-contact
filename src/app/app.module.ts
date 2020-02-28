@@ -1,3 +1,4 @@
+import { NgbdSortableHeader } from './shared/ngbd-sortable-header';
 import { AppRoutingModule } from './app-routing.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
@@ -11,6 +12,7 @@ import { HomeComponent } from './home/home.component';
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import { ContactDetailComponent } from './contacts/contact-detail/contact-detail.component';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -20,13 +22,15 @@ import { ContactDetailComponent } from './contacts/contact-detail/contact-detail
     HeaderComponent,
     FooterComponent,
     ContactDetailComponent,
-    NgbdModalConfirm
+    NgbdModalConfirm,
+    NgbdSortableHeader
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpClientModule,
     ReactiveFormsModule,
+    CommonModule,
     NgbModule,
     AppRoutingModule
   ],
