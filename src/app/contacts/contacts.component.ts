@@ -1,3 +1,4 @@
+import { AppConstant } from './../shared/app.constant';
 import { NgbdSortableHeader, SortEvent, compare } from './../shared/ngbd-sortable-header';
 import { Router } from '@angular/router';
 import { ContactService } from './contact.service';
@@ -31,13 +32,15 @@ export class ContactsComponent implements OnInit {
       .subscribe(contacts => {
         this.contacts = contacts;
         this.isFetching = false;
-      });
+      },
+      err => console.log('Error on fetching data : ' + err)
+      );
   }
 
   onUpdate(id: number) {
     this.contactService.getContact(id)
       .subscribe(c => {
-        console.log('contact detail: ', c);
+
       });
   }
 
@@ -48,8 +51,8 @@ export class ContactsComponent implements OnInit {
   onDelete(c: Contact) {
     const modalRef = this.modalService.open(NgbdModalConfirm);
     modalRef.componentInstance.contact = c;
-    modalRef.componentInstance.confirmationBoxTitle = 'Confirmation?';
-    modalRef.componentInstance.confirmationMessage = 'Do you want to cancel?';
+    modalRef.componentInstance.confirmationBoxTitle = AppConstant.MODAL_CONFIRMATION_TITLE;
+    modalRef.componentInstance.confirmationMessage = AppConstant.MODAL_CONFIRMATION_MESSAGE;
 
     modalRef.result
       .then((userResponse) => {

@@ -1,4 +1,4 @@
-import { customValidationService } from './../../validator/custom-validation.service';
+import { CustomValidationService } from './../../validator/custom-validation.service';
 import { ContactService } from './../contact.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
@@ -63,10 +63,8 @@ export class ContactDetailComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log('onSumbit()', this.contactForm.value);
     this.contactService.save(this.contactForm.value)
     .subscribe( res => {
-      console.log(res);
       this.router.navigate(['../'], {relativeTo: this.route}); // up to 1 level
     });
   }
